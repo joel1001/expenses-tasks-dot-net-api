@@ -1,0 +1,180 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5673:5672" # Cambiado a 5673 para evitar conflicto
+      - "15673:15672" # Cambiado a 15673 para evitar conflicto
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    restart: unless-stopped
+    networks:
+      - microservices-network
+  postgres-users:
+    image: postgres:16-alpine
+    container_name: postgres-users
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: users_dev
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres-users-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  postgres-tasks:
+    image: postgres:16-alpine
+    container_name: postgres-tasks
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tasks_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-tasks-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  postgres-expenses:
+    image: postgres:16-alpine
+    container_name: postgres-expenses
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: expenses_dev
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-expenses-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  postgres-notifications:
+    image: postgres:16-alpine
+    container_name: postgres-notifications
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: notifications_dev
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres-notifications-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  users-api:
+    build:
+      context: .
+      dockerfile: Users.API/Dockerfile
+    container_name: users-api
+    ports:
+      - "5001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres-users;Database=users_dev;Username=postgres;Password=postgres;Port=5432
+    depends_on:
+      - postgres-users
+    networks:
+      - microservices-network
+
+  tasks-api:
+    build:
+      context: .
+      dockerfile: Tasks.API/Dockerfile
+    container_name: tasks-api
+    ports:
+      - "5002:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres-tasks;Database=tasks_dev;Username=postgres;Password=postgres;Port=5432
+    depends_on:
+      - postgres-tasks
+    networks:
+      - microservices-network
+
+  expenses-api:
+    build:
+      context: .
+      dockerfile: Expenses.API/Dockerfile
+    container_name: expenses-api
+    ports:
+      - "5003:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres-expenses;Database=expenses_dev;Username=postgres;Password=postgres;Port=5432
+    depends_on:
+      - postgres-expenses
+    networks:
+      - microservices-network
+
+  notifications-api:
+    build:
+      context: .
+      dockerfile: Notifications.API/Dockerfile
+    container_name: notifications-api
+    ports:
+      - "5004:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres-notifications;Database=notifications_dev;Username=postgres;Password=postgres;Port=5432
+      - RabbitMQ__ConnectionString=amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      - postgres-notifications
+      - rabbitmq
+    networks:
+      - microservices-network
+
+  gateway-api:
+    build:
+      context: .
+      dockerfile: Gateway.API/Dockerfile
+    container_name: gateway-api
+    ports:
+      - "6000:8080" # Cambiado a 6000 porque 5000 está ocupado por AirPlay
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      - users-api
+      - tasks-api
+      - expenses-api
+      - notifications-api
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+volumes:
+  postgres-users-data:
+  postgres-tasks-data:
+  postgres-expenses-data:
+  postgres-notifications-data:
+  pgadmin-data:
+
+networks:
+  microservices-network:
+    driver: bridge

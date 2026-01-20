@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de Gastos Editable</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        /* Celdas editables */
+        .editable {
+            cursor: pointer;
+            min-width: 80px;
+        }
+        .editable:hover {
+            background-color: #f0f0f0;
+        }
+        .editable.editing {
+            background-color: #fffacd;
+        }
+        /* Inputs dentro de las celdas */
+        .editable input {
+            width: 100%;
+            border: 1px solid #4CAF50;
+            padding: 4px;
+            font-size: 14px;
+        }
+        /* Select para moneda */
+        .currency-select {
+            width: 100%;
+            padding: 4px;
+            border: 1px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tabla de Gastos - TODOS LOS CAMPOS EDITABLES</h1>
+    
+    <table id="expensesTable">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Expected USD</th>
+                <th>Actual USD</th>
+                <th>Expected CRC</th>
+                <th>Actual CRC</th>
+                <th>Currency</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr data-expense-id="1">
+                <td class="editable" data-field="name">Alimentación</td>
+                <td class="editable" data-field="expectedUSD">100.00</td>
+                <td class="editable" data-field="actualUSD">95.50</td>
+                <td class="editable" data-field="expectedCRC">55000.00</td>
+                <td class="editable" data-field="actualCRC">52500.00</td>
+                <td>
+                    <select class="currency-select" data-field="currency">
+                        <option value="USD">USD</option>
+                        <option value="CRC">CRC</option>
+                    </select>
+                </td>
+            </tr>
+            <tr data-expense-id="2">
+                <td class="editable" data-field="name">Transporte</td>
+                <td class="editable" data-field="expectedUSD">50.00</td>
+                <td class="editable" data-field="actualUSD">45.00</td>
+                <td class="editable" data-field="expectedCRC">27500.00</td>
+                <td class="editable" data-field="actualCRC">24750.00</td>
+                <td>
+                    <select class="currency-select" data-field="currency">
+                        <option value="USD">USD</option>
+                        <option value="CRC">CRC</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button onclick="saveChanges()">Guardar Cambios</button>
+    <div id="status"></div>
+
+    <script>
+        // Hacer todas las celdas editables
+        document.addEventListener('DOMContentLoaded', function() {
+            const editableCells = document.querySelectorAll('.editable');
+            
+            editableCells.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    makeEditable(this);
+                });
+            });
+        });
+
+        function makeEditable(cell) {
+            // Si ya está editando, no hacer nada
+            if (cell.classList.contains('editing')) {
+                return;
+            }
+
+            const originalValue = cell.textContent.trim();
+            const field = cell.getAttribute('data-field');
+            
+            // Crear input
+            const input = document.createElement('input');
+            input.type = field.includes('USD') || field.includes('CRC') ? 'number' : 'text';
+            input.step = '0.01';
+            input.value = originalValue;
+            
+            // Reemplazar contenido de la celda
+            cell.textContent = '';
+            cell.appendChild(input);
+            cell.classList.add('editing');
+            
+            // Focus y seleccionar todo
+            input.focus();
+            input.select();
+            
+            // Guardar al presionar Enter o perder foco
+            input.addEventListener('blur', function() {
+                saveCell(cell, input.value, field);
+            });
+            
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    input.blur();
+                }
+            });
+        }
+
+        function saveCell(cell, newValue, field) {
+            cell.textContent = newValue;
+            cell.classList.remove('editing');
+            
+            // Actualizar el estado interno
+            const row = cell.closest('tr');
+            const expenseId = row.getAttribute('data-expense-id');
+            
+            console.log(`Actualizado: Expense ${expenseId}, Campo: ${field}, Valor: ${newValue}`);
+        }
+
+        function saveChanges() {
+            const expenses = [];
+            const rows = document.querySelectorAll('#tableBody tr');
+            
+            rows.forEach(row => {
+                const expense = {
+                    id: row.getAttribute('data-expense-id'),
+                    name: row.querySelector('[data-field="name"]').textContent,
+                    expectedUSD: parseFloat(row.querySelector('[data-field="expectedUSD"]').textContent) || 0,
+                    actualUSD: parseFloat(row.querySelector('[data-field="actualUSD"]').textContent) || 0,
+                    expectedCRC: parseFloat(row.querySelector('[data-field="expectedCRC"]').textContent) || 0,
+                    actualCRC: parseFloat(row.querySelector('[data-field="actualCRC"]').textContent) || 0,
+                    currency: row.querySelector('[data-field="currency"]').value
+                };
+                expenses.push(expense);
+            });
+            
+            console.log('Datos a enviar:', expenses);
+            
+            // Aquí harías la llamada al API
+            // fetch('http://localhost:5003/api/expenses/{id}', {
+            //     method: 'PUT',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ userId: '...', expenses: expenses })
+            // });
+            
+            document.getElementById('status').textContent = '✅ Cambios guardados (ver consola)';
+        }
+    </script>
+</body>
+</html>

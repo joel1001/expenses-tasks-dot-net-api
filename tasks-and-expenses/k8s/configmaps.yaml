@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: users-config
+data:
+  connection-string: "Host=postgres;Database=users_dev;Username=postgres;Password=postgres;Port=5432"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tasks-config
+data:
+  connection-string: "Host=postgres;Database=tasks_dev;Username=postgres;Password=postgres;Port=5432"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: expenses-config
+data:
+  connection-string: "Host=postgres;Database=expenses_dev;Username=postgres;Password=postgres;Port=5432"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notifications-config
+data:
+  connection-string: "Host=postgres;Database=notifications_dev;Username=postgres;Password=postgres;Port=5432"
+  rabbitmq-connection: "amqp://guest:guest@rabbitmq:5672/"

@@ -13,7 +13,20 @@ Esta guía te lleva paso a paso para desplegar las APIs en Railway usando tu bas
 
 ## ⚠️ Error "Error creating build plan with Railpack"
 
-Si ves este error, es porque Railway no encontraba un Dockerfile en la raíz. Ahora hay un `Dockerfile` en la raíz que despliega el Gateway. Haz commit, push y vuelve a desplegar.
+Estructura del repo:
+
+```
+expenses-tasks-dot-net-api/     ← raíz del repo
+  tasks-and-expenses/           ← aquí está el código (Dockerfile, railway.json)
+```
+
+Railway busca el Dockerfile en la raíz; como está dentro de `tasks-and-expenses`, hay que indicarlo:
+
+1. En Railway → tu servicio → **Settings** → **Build** → **Root Directory**
+2. Pon: **`tasks-and-expenses`**
+3. Guarda y haz **Redeploy**
+
+El `railway.json` ya fuerza el builder `DOCKERFILE`.
 
 ---
 

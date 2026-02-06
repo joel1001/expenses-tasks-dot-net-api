@@ -11,6 +11,10 @@ Esta guía te lleva paso a paso para desplegar las APIs en Railway usando tu bas
 - **Neon**: base de datos (ya la tienes)
 - **Railway**: 5 servicios (Gateway + 4 APIs) + RabbitMQ opcional
 
+## ⚠️ Error "Error creating build plan with Railpack"
+
+Si ves este error, es porque Railway no encontraba un Dockerfile en la raíz. Ahora hay un `Dockerfile` en la raíz que despliega el Gateway. Haz commit, push y vuelve a desplegar.
+
 ---
 
 ## Paso 1: Preparar el repositorio

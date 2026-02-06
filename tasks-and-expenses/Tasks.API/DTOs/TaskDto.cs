@@ -36,6 +36,10 @@ public class TaskItemDto
     [JsonPropertyName("createdAt")]
     public string? CreatedAt { get; set; }
     
+    // Frecuencia de repetición de la tarea
+    [JsonPropertyName("frequency")]
+    public string? Frequency { get; set; } = "once"; // once, daily, weekly, biweekly, monthly
+    
     // Campos de valores esperados y actuales en diferentes monedas
     // Acepta múltiples formatos: expectedUSD, Expected USD, etc.
     // NOTA: JsonExtensionData capturará campos con espacios y los preservará

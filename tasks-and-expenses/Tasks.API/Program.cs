@@ -3,29 +3,21 @@ using Tasks.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Railway: escuchar en PORT
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add CORS - Permitir todos los orígenes en desarrollo
+// Add CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        if (builder.Environment.IsDevelopment())
-        {
-            policy.AllowAnyOrigin()
-                  .AllowAnyMethod()
-                  .AllowAnyHeader();
-        }
-        else
-        {
-            policy.WithOrigins("http://localhost:3000", "http://localhost:5173", "http://localhost:3001")
-                  .AllowAnyMethod()
-                  .AllowAnyHeader()
-                  .AllowCredentials();
-        }
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
 
@@ -71,5 +63,13 @@ else
 
 app.UseAuthorization();
 app.MapControllers();
+
+// Crear schema/tablas si no existen (Neon o Postgres local)
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<TasksDbContext>();
+    if (db.Database.CanConnect())
+        db.Database.EnsureCreated();
+}
 
 app.Run();

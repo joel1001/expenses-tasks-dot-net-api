@@ -14,6 +14,7 @@ public class ExpensesDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.HasDefaultSchema("expenses");
 
         modelBuilder.Entity<Expense>(entity =>
         {

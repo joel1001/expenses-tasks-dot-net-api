@@ -14,6 +14,7 @@ public class TasksDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.HasDefaultSchema("tasks");
 
         modelBuilder.Entity<TaskModel>(entity =>
         {

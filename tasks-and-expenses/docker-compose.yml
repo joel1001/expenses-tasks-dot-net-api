@@ -141,7 +141,7 @@ services:
       dockerfile: Gateway.API/Dockerfile
     container_name: gateway-api
     ports:
-      - "6000:8080" # Cambiado a 6000 porque 5000 está ocupado por AirPlay
+      - "8080:8080" # 6000 bloqueado por Chrome (ERR_UNSAFE_PORT)
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080

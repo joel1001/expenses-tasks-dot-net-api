@@ -20,6 +20,7 @@ public class UsersDbContext : DbContext, IUsersDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.HasDefaultSchema("users");
 
         modelBuilder.Entity<User>(entity =>
         {

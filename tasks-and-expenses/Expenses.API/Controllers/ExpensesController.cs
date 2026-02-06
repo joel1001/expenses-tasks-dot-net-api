@@ -94,19 +94,39 @@ public class ExpensesController : ControllerBase
         return dto;
     }
 
+    /// <summary>
+    /// Obtiene los gastos del usuario. Solo se muestran tablas de los últimos 2 años;
+    /// cualquier documento más viejo se elimina de la base de datos.
+    /// </summary>
     [HttpGet("user/{userId}")]
     public async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpensesByUser(Guid userId)
     {
-        var expenses = await _context.Expenses
-            .Where(e => e.UserId == userId)
+        var cutoffYear = DateTime.UtcNow.Year - 2;
+
+        var oldExpenses = await _context.Expenses
+            .Where(e => e.UserId == userId && e.Year < cutoffYear)
             .ToListAsync();
-        
+        if (oldExpenses.Any())
+        {
+            _context.Expenses.RemoveRange(oldExpenses);
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Removed {Count} expense document(s) older than year {CutoffYear} for user {UserId}",
+                oldExpenses.Count, cutoffYear, userId);
+        }
+
+        // Orden natural: año ascendente, mes ascendente (Enero a Diciembre)
+        var expenses = await _context.Expenses
+            .Where(e => e.UserId == userId && e.Year >= cutoffYear)
+            .OrderBy(e => e.Year)
+            .ThenBy(e => e.Month)
+            .ToListAsync();
+
         var jsonOptions = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = true
         };
-        
+
         var dtos = expenses.Select(e => new ExpenseDto
         {
             Id = e.Id,
@@ -127,6 +147,17 @@ public class ExpensesController : ControllerBase
         }).ToList();
 
         return dtos;
+    }
+
+    /// <summary>
+    /// Obtiene gastos por userId (int de Users API). Convierte a Guid estándar: 00000000-0000-0000-0000-{userId hex}
+    /// </summary>
+    [HttpGet("by-user-id/{userIdInt:int}")]
+    public async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpensesByUserIdInt(int userIdInt)
+    {
+        var hexId = userIdInt.ToString("x").PadLeft(12, '0');
+        var userGuid = Guid.Parse($"00000000-0000-0000-0000-{hexId}");
+        return await GetExpensesByUser(userGuid);
     }
 
     [HttpPost]
@@ -275,6 +306,11 @@ public class ExpensesController : ControllerBase
         return CreatedAtAction(nameof(GetExpense), new { id = expense.Id }, response);
     }
 
+    /// <summary>
+    /// Guarda todos los cambios de la tabla en un solo request.
+    /// El body debe incluir la lista completa de expense types (Expense Type, Currency, Payment Method, Expected/Actual USD/CRC).
+    /// Los valores numéricos se limitan en el servidor para evitar números enormes.
+    /// </summary>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateExpense(Guid id, [FromBody] CreateExpenseDto dto)
     {
@@ -303,16 +339,18 @@ public class ExpensesController : ControllerBase
                 return BadRequest(new { error = "Todos los tipos de gasto deben tener un nombre" });
             }
             
-            // Validar método de pago si se especifica
+            // Validar método de pago si se especifica (acepta "credit", "debit", "Debit Account", "Payment method", etc.)
             if (!string.IsNullOrEmpty(expenseType.PaymentMethod))
             {
-                if (expenseType.PaymentMethod != "credit" && expenseType.PaymentMethod != "debit")
+                var pm = expenseType.PaymentMethod.Trim().ToLowerInvariant();
+                var isCredit = pm == "credit" || pm.Contains("credit");
+                var isDebit = pm == "debit" || pm.Contains("debit") || pm.Contains("account") || pm.Contains("payment");
+                if (!isCredit && !isDebit)
                 {
-                    return BadRequest(new { error = "El método de pago debe ser 'credit' o 'debit'" });
+                    return BadRequest(new { error = "El método de pago debe ser 'credit' o 'debit' (o ej. 'Debit Account')" });
                 }
-                
-                // Si es crédito, debe tener un creditCardId válido
-                if (expenseType.PaymentMethod == "credit" && (!expenseType.CreditCardId.HasValue || expenseType.CreditCardId.Value <= 0))
+
+                if (isCredit && (!expenseType.CreditCardId.HasValue || expenseType.CreditCardId.Value <= 0))
                 {
                     return BadRequest(new { error = "Debe seleccionar una tarjeta de crédito válida" });
                 }
@@ -420,27 +458,30 @@ public class ExpensesController : ControllerBase
         return NoContent();
     }
 
+    private const decimal MaxSafeAmount = 999999999.99m;
+
     /// <summary>
-    /// Procesa los ExpenseTypes para asegurar que todos los campos, incluyendo los de AdditionalProperties, se preserven
-    /// También maneja campos con espacios como "Expected USD" desde AdditionalProperties
+    /// Procesa los ExpenseTypes: preserva campos, limita montos para evitar números enormes, normaliza PaymentMethod.
     /// </summary>
     private List<ExpenseTypeDto> ProcessExpenseTypes(List<ExpenseTypeDto> expenses)
     {
         var processed = new List<ExpenseTypeDto>();
-        
+
         foreach (var expense in expenses)
         {
+            var paymentMethod = NormalizePaymentMethod(expense.PaymentMethod);
+
             var processedExpense = new ExpenseTypeDto
             {
                 Name = expense.Name,
-                Limit = expense.Limit,
-                ActualAmount = expense.ActualAmount,
-                Currency = expense.Currency,
-                ExpectedUSD = expense.ExpectedUSD,
-                ActualUSD = expense.ActualUSD,
-                ExpectedCRC = expense.ExpectedCRC,
-                ActualCRC = expense.ActualCRC,
-                PaymentMethod = expense.PaymentMethod,
+                Limit = ClampDecimal(expense.Limit),
+                ActualAmount = expense.ActualAmount.HasValue ? ClampDecimal(expense.ActualAmount.Value) : null,
+                Currency = expense.Currency ?? "USD",
+                ExpectedUSD = expense.ExpectedUSD.HasValue ? ClampDecimal(expense.ExpectedUSD.Value) : null,
+                ActualUSD = expense.ActualUSD.HasValue ? ClampDecimal(expense.ActualUSD.Value) : null,
+                ExpectedCRC = expense.ExpectedCRC.HasValue ? ClampDecimal(expense.ExpectedCRC.Value) : null,
+                ActualCRC = expense.ActualCRC.HasValue ? ClampDecimal(expense.ActualCRC.Value) : null,
+                PaymentMethod = paymentMethod,
                 CreditCardId = expense.CreditCardId,
                 AdditionalProperties = new Dictionary<string, object>()
             };
@@ -484,6 +525,25 @@ public class ExpensesController : ControllerBase
         }
         
         return processed;
+    }
+
+    private static decimal ClampDecimal(decimal value)
+    {
+        if (value > MaxSafeAmount) return MaxSafeAmount;
+        if (value < -MaxSafeAmount) return -MaxSafeAmount;
+        return value;
+    }
+
+    /// <summary>
+    /// Acepta "Debit Account", "Payment method", "debit", "credit", etc. y devuelve "debit" o "credit".
+    /// </summary>
+    private static string? NormalizePaymentMethod(string? paymentMethod)
+    {
+        if (string.IsNullOrWhiteSpace(paymentMethod)) return null;
+        var lower = paymentMethod.Trim().ToLowerInvariant();
+        if (lower.Contains("credit")) return "credit";
+        if (lower.Contains("debit") || lower.Contains("account") || lower.Contains("payment")) return "debit";
+        return paymentMethod.Trim();
     }
 
     private bool ExpenseExists(Guid id)

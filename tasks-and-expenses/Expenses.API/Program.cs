@@ -6,6 +6,10 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Railway: escuchar en PORT
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // Add services to the container.
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -22,20 +26,17 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .SetIsOriginAllowed(_ => true)
-              .AllowCredentials();
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
 
 // Add DbContext
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? "Host=localhost;Database=expenses_dev;Username=postgres;Password=postgres;Port=5436";
+    ?? "Host=localhost;Database=expenses_dev;Username=postgres;Password=postgres;Port=5434";
 
-// Log connection string for debugging (without password)
-Console.WriteLine($"🔌 Connecting to PostgreSQL at: {connectionString.Replace("Password=postgres", "Password=***")}");
+// Log connection string for debugging (hide password)
+var safeConn = connectionString != null ? System.Text.RegularExpressions.Regex.Replace(connectionString, @"Password=[^;]*", "Password=***") : "null";
+Console.WriteLine($"🔌 Connecting to PostgreSQL: {safeConn}");
 
 builder.Services.AddDbContext<ExpensesDbContext>(options =>
     options.UseNpgsql(connectionString, npgsqlOptions =>
@@ -65,5 +66,13 @@ app.UseSwaggerUI(c =>
 
 app.UseAuthorization();
 app.MapControllers();
+
+// Crear schema/tablas si no existen (Neon o Postgres local)
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ExpensesDbContext>();
+    if (db.Database.CanConnect())
+        db.Database.EnsureCreated();
+}
 
 app.Run();

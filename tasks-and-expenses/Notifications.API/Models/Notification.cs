@@ -28,7 +28,7 @@ public class Notification
     
     // Campos para notificaciones de tareas programadas
     public DateTime? TaskDateTime { get; set; } // Fecha y hora de la tarea
-    public DateTime? ShowAt { get; set; } // Cuándo mostrar la notificación (15 min antes de TaskDateTime)
+    public DateTime? ShowAt { get; set; } // Cuándo mostrar la notificación (1 hora antes de TaskDateTime)
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     

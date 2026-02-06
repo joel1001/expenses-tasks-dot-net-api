@@ -40,8 +40,10 @@ public class NotificationsController : ControllerBase
     [HttpGet("user/{userId}")]
     public async Task<ActionResult<IEnumerable<Notification>>> GetNotificationsByUser(Guid userId)
     {
+        // Retornar solo notificaciones que ya se han activado (sent) o que ya fueron leídas (read)
+        // No mostrar notificaciones "pending" que aún no se han activado
         return await _context.Notifications
-            .Where(n => n.UserId == userId)
+            .Where(n => n.UserId == userId && (n.Status == "sent" || n.Status == "read"))
             .OrderByDescending(n => n.CreatedAt)
             .ToListAsync();
     }
@@ -49,8 +51,10 @@ public class NotificationsController : ControllerBase
     [HttpGet("user/{userId}/unread")]
     public async Task<ActionResult<IEnumerable<Notification>>> GetUnreadNotificationsByUser(Guid userId)
     {
+        // Solo contar notificaciones con status "sent" (ya activadas) que no han sido leídas
+        // Las notificaciones "pending" aún no se han mostrado, por lo que no se cuentan
         return await _context.Notifications
-            .Where(n => n.UserId == userId && n.Status != "read")
+            .Where(n => n.UserId == userId && n.Status == "sent")
             .OrderByDescending(n => n.CreatedAt)
             .ToListAsync();
     }
@@ -58,8 +62,10 @@ public class NotificationsController : ControllerBase
     [HttpGet("user/{userId}/unread/count")]
     public async Task<ActionResult<int>> GetUnreadNotificationsCount(Guid userId)
     {
+        // Solo contar notificaciones con status "sent" (ya activadas) que no han sido leídas
+        // Las notificaciones "pending" aún no se han mostrado, por lo que no se cuentan como no leídas
         var count = await _context.Notifications
-            .CountAsync(n => n.UserId == userId && n.Status != "read");
+            .CountAsync(n => n.UserId == userId && n.Status == "sent");
         return count;
     }
 

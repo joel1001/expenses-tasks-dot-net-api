@@ -12,6 +12,10 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Railway: escuchar en PORT
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -32,11 +36,9 @@ builder.Services.AddCors(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
     ?? "Host=localhost;Database=users_dev;Username=postgres;Password=postgres;Port=5432";
 
-// Log connection string for debugging (without password)
-Console.WriteLine($"🔌 Connecting to PostgreSQL at: {connectionString.Replace("Password=postgres", "Password=***")}");
-
-// Log connection string for debugging (remove in production)
-Console.WriteLine($"🔌 Connection String: {connectionString?.Replace("Password=postgres", "Password=***")}");
+// Log connection string for debugging (hide password)
+var safeConn = connectionString != null ? System.Text.RegularExpressions.Regex.Replace(connectionString, @"Password=[^;]*", "Password=***") : "null";
+Console.WriteLine($"🔌 Connecting to PostgreSQL: {safeConn}");
 
 builder.Services.AddDbContext<UsersDbContext>(options =>
     options.UseNpgsql(connectionString, npgsqlOptions =>
@@ -81,6 +83,14 @@ app.UseSwaggerUI(c =>
 
 // MapControllers - debe estar al final
 app.MapControllers();
+
+// Crear schema/tablas si no existen (Neon o Postgres local)
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<UsersDbContext>();
+    if (db.Database.CanConnect())
+        db.Database.EnsureCreated();
+}
 
 app.Run();
 

@@ -3,13 +3,18 @@ using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Railway: usar PORT si existe
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add Ocelot
+// Add Ocelot - Production usa ocelot.Production.json (Railway private network)
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+builder.Configuration.AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 builder.Services.AddOcelot(builder.Configuration);
 
 // Add CORS

@@ -1,0 +1,19 @@
+{
+  "Routes": [
+    {"DownstreamPathTemplate":"/api/users/login","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5001}],"UpstreamPathTemplate":"/api/users/login","UpstreamHttpMethod":["POST"]},
+    {"DownstreamPathTemplate":"/api/users","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5001}],"UpstreamPathTemplate":"/api/users","UpstreamHttpMethod":["GET","POST","PUT","DELETE"]},
+    {"DownstreamPathTemplate":"/api/users/{id}","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5001}],"UpstreamPathTemplate":"/api/users/{id}","UpstreamHttpMethod":["GET","PUT","DELETE"]},
+    {"DownstreamPathTemplate":"/api/tasks","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5002}],"UpstreamPathTemplate":"/api/tasks","UpstreamHttpMethod":["GET","POST","PUT","DELETE"]},
+    {"DownstreamPathTemplate":"/api/tasks/{id}","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5002}],"UpstreamPathTemplate":"/api/tasks/{id}","UpstreamHttpMethod":["GET","PUT","DELETE"]},
+    {"DownstreamPathTemplate":"/api/tasks/user/{userId}","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5002}],"UpstreamPathTemplate":"/api/tasks/user/{userId}","UpstreamHttpMethod":["GET"]},
+    {"DownstreamPathTemplate":"/api/expenses","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5003}],"UpstreamPathTemplate":"/api/expenses","UpstreamHttpMethod":["GET","POST","PUT","DELETE"]},
+    {"DownstreamPathTemplate":"/api/expenses/{id}","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5003}],"UpstreamPathTemplate":"/api/expenses/{id}","UpstreamHttpMethod":["GET","PUT","DELETE"]},
+    {"DownstreamPathTemplate":"/api/expenses/user/{userId}","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5003}],"UpstreamPathTemplate":"/api/expenses/user/{userId}","UpstreamHttpMethod":["GET"]},
+    {"DownstreamPathTemplate":"/api/expenses/by-user-id/{userIdInt}","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5003}],"UpstreamPathTemplate":"/api/expenses/by-user-id/{userIdInt}","UpstreamHttpMethod":["GET"]},
+    {"DownstreamPathTemplate":"/api/notifications","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5004}],"UpstreamPathTemplate":"/api/notifications","UpstreamHttpMethod":["GET","POST","PUT","DELETE"]},
+    {"DownstreamPathTemplate":"/api/notifications/{id}","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5004}],"UpstreamPathTemplate":"/api/notifications/{id}","UpstreamHttpMethod":["GET","PUT","DELETE","PATCH"]},
+    {"DownstreamPathTemplate":"/api/notifications/user/{userId}","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5004}],"UpstreamPathTemplate":"/api/notifications/user/{userId}","UpstreamHttpMethod":["GET"]},
+    {"DownstreamPathTemplate":"/api/notifications/user/{userId}/unread","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5004}],"UpstreamPathTemplate":"/api/notifications/user/{userId}/unread","UpstreamHttpMethod":["GET"]},
+    {"DownstreamPathTemplate":"/api/notifications/user/{userId}/unread/count","DownstreamScheme":"http","DownstreamHostAndPorts":[{"Host":"localhost","Port":5004}],"UpstreamPathTemplate":"/api/notifications/user/{userId}/unread/count","UpstreamHttpMethod":["GET"]}
+  ]
+}

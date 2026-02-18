@@ -1,14 +1,13 @@
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY ["Users.API/Users.API.csproj", "Users.API/"]
-RUN dotnet restore "Users.API/Users.API.csproj"
+COPY ["Users.API.csproj", "./"]
+RUN dotnet restore "Users.API.csproj"
 COPY . .
-WORKDIR "/src/Users.API"
+WORKDIR "/src"
 RUN dotnet build "Users.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

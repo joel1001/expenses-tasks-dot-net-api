@@ -1,14 +1,13 @@
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY ["Gateway.API/Gateway.API.csproj", "Gateway.API/"]
-RUN dotnet restore "Gateway.API/Gateway.API.csproj"
+COPY ["Gateway.API.csproj", "./"]
+RUN dotnet restore "Gateway.API.csproj"
 COPY . .
-WORKDIR "/src/Gateway.API"
+WORKDIR "/src"
 RUN dotnet build "Gateway.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

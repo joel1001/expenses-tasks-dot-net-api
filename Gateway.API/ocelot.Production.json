@@ -5,8 +5,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api.railway.internal",
-          "Port": 8080
+          "Host": "users-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/users/login",
@@ -19,8 +19,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api.railway.internal",
-          "Port": 8080
+          "Host": "users-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/users",
@@ -36,8 +36,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api.railway.internal",
-          "Port": 8080
+          "Host": "users-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/users/{id}",
@@ -52,8 +52,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "tasks-api.railway.internal",
-          "Port": 8080
+          "Host": "tasks-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/tasks",
@@ -69,8 +69,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "tasks-api.railway.internal",
-          "Port": 8080
+          "Host": "tasks-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/tasks/{id}",
@@ -85,8 +85,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "tasks-api.railway.internal",
-          "Port": 8080
+          "Host": "tasks-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/tasks/user/{userId}",
@@ -99,8 +99,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api.railway.internal",
-          "Port": 8080
+          "Host": "expenses-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/expenses",
@@ -116,8 +116,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api.railway.internal",
-          "Port": 8080
+          "Host": "expenses-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/expenses/{id}",
@@ -132,8 +132,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api.railway.internal",
-          "Port": 8080
+          "Host": "expenses-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/expenses/user/{userId}",
@@ -146,8 +146,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api.railway.internal",
-          "Port": 8080
+          "Host": "expenses-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/expenses/by-user-id/{userIdInt}",
@@ -160,8 +160,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api.railway.internal",
-          "Port": 8080
+          "Host": "notifications-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/notifications",
@@ -177,8 +177,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api.railway.internal",
-          "Port": 8080
+          "Host": "notifications-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/{id}",
@@ -194,8 +194,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api.railway.internal",
-          "Port": 8080
+          "Host": "notifications-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/user/{userId}",
@@ -208,8 +208,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api.railway.internal",
-          "Port": 8080
+          "Host": "notifications-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/user/{userId}/unread",
@@ -222,8 +222,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api.railway.internal",
-          "Port": 8080
+          "Host": "notifications-api.onrender.com",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/user/{userId}/unread/count",

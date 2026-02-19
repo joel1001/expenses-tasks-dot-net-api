@@ -5,7 +5,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api.onrender.com",
+          "Host": "users-api-v29h.onrender.com",
           "Port": 80
         }
       ],
@@ -19,7 +19,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api.onrender.com",
+          "Host": "users-api-v29h.onrender.com",
           "Port": 80
         }
       ],
@@ -36,7 +36,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api.onrender.com",
+          "Host": "users-api-v29h.onrender.com",
           "Port": 80
         }
       ],
@@ -52,7 +52,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "tasks-api.onrender.com",
+          "Host": "tasks-api-7wez.onrender.com",
           "Port": 80
         }
       ],
@@ -69,7 +69,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "tasks-api.onrender.com",
+          "Host": "tasks-api-7wez.onrender.com",
           "Port": 80
         }
       ],
@@ -85,7 +85,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "tasks-api.onrender.com",
+          "Host": "tasks-api-7wez.onrender.com",
           "Port": 80
         }
       ],
@@ -99,7 +99,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api.onrender.com",
+          "Host": "expenses-api-4usi.onrender.com",
           "Port": 80
         }
       ],
@@ -116,7 +116,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api.onrender.com",
+          "Host": "expenses-api-4usi.onrender.com",
           "Port": 80
         }
       ],
@@ -132,7 +132,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api.onrender.com",
+          "Host": "expenses-api-4usi.onrender.com",
           "Port": 80
         }
       ],
@@ -146,7 +146,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api.onrender.com",
+          "Host": "expenses-api-4usi.onrender.com",
           "Port": 80
         }
       ],
@@ -160,7 +160,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api.onrender.com",
+          "Host": "notifications-api-aisk.onrender.com",
           "Port": 80
         }
       ],
@@ -177,7 +177,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api.onrender.com",
+          "Host": "notifications-api-aisk.onrender.com",
           "Port": 80
         }
       ],
@@ -194,7 +194,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api.onrender.com",
+          "Host": "notifications-api-aisk.onrender.com",
           "Port": 80
         }
       ],
@@ -208,7 +208,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api.onrender.com",
+          "Host": "notifications-api-aisk.onrender.com",
           "Port": 80
         }
       ],
@@ -222,7 +222,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api.onrender.com",
+          "Host": "notifications-api-aisk.onrender.com",
           "Port": 80
         }
       ],

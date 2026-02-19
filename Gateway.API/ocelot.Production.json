@@ -2,7 +2,7 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/users/login",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "users-api-v29h.onrender.com",
@@ -16,7 +16,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/users",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "users-api-v29h.onrender.com",
@@ -33,7 +33,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/users/{id}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "users-api-v29h.onrender.com",
@@ -49,7 +49,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/tasks",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "tasks-api-7wez.onrender.com",
@@ -66,7 +66,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/tasks/{id}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "tasks-api-7wez.onrender.com",
@@ -82,7 +82,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/tasks/user/{userId}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "tasks-api-7wez.onrender.com",
@@ -96,7 +96,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/expenses",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "expenses-api-4usi.onrender.com",
@@ -113,7 +113,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/expenses/{id}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "expenses-api-4usi.onrender.com",
@@ -129,7 +129,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/expenses/user/{userId}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "expenses-api-4usi.onrender.com",
@@ -143,7 +143,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/expenses/by-user-id/{userIdInt}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "expenses-api-4usi.onrender.com",
@@ -157,7 +157,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/notifications",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "notifications-api-aisk.onrender.com",
@@ -174,7 +174,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/notifications/{id}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "notifications-api-aisk.onrender.com",
@@ -191,7 +191,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/notifications/user/{userId}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "notifications-api-aisk.onrender.com",
@@ -205,7 +205,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/notifications/user/{userId}/unread",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "notifications-api-aisk.onrender.com",
@@ -219,7 +219,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/notifications/user/{userId}/unread/count",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "notifications-api-aisk.onrender.com",

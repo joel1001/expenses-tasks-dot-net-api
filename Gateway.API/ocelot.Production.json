@@ -6,7 +6,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "users-api-v29h.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/users/login",
@@ -20,7 +20,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "users-api-v29h.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/users",
@@ -37,7 +37,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "users-api-v29h.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/users/{id}",
@@ -48,12 +48,29 @@
       ]
     },
     {
+      "DownstreamPathTemplate": "/api/users/{userId}/credit-cards",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users-api-v29h.onrender.com",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{userId}/credit-cards",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ]
+    },
+    {
       "DownstreamPathTemplate": "/api/tasks",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "tasks-api-7wez.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/tasks",
@@ -70,7 +87,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "tasks-api-7wez.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/tasks/{id}",
@@ -86,7 +103,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "tasks-api-7wez.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/tasks/user/{userId}",
@@ -100,7 +117,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "expenses-api-4usi.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/expenses",
@@ -117,7 +134,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "expenses-api-4usi.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/expenses/{id}",
@@ -133,7 +150,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "expenses-api-4usi.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/expenses/user/{userId}",
@@ -147,7 +164,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "expenses-api-4usi.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/expenses/by-user-id/{userIdInt}",
@@ -161,7 +178,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "notifications-api-aisk.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/notifications",
@@ -178,7 +195,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "notifications-api-aisk.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/{id}",
@@ -195,7 +212,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "notifications-api-aisk.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/user/{userId}",
@@ -209,7 +226,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "notifications-api-aisk.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/user/{userId}/unread",
@@ -223,7 +240,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "notifications-api-aisk.onrender.com",
-          "Port": 80
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/user/{userId}/unread/count",

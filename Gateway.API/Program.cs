@@ -50,8 +50,18 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger"; // Acceder en /swagger
 });
 
-// Health check para Render: responde 200 sin llamar a otros servicios (evita timeout del health check)
-app.MapGet("/health", () => Results.Ok(new { status = "ok", service = "gateway" }));
+// Health check para Render: responder ANTES de Ocelot (Ocelot no tiene ruta para /health y devolvería error)
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.StartsWithSegments("/health", StringComparison.OrdinalIgnoreCase))
+    {
+        context.Response.StatusCode = 200;
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsJsonAsync(new { status = "ok", service = "gateway" });
+        return;
+    }
+    await next();
+});
 
 // MapControllers - antes de Ocelot
 app.MapControllers();

@@ -297,3 +297,9 @@ Si en Render ves errores tipo *"Timed out after waiting for internal health chec
   3. Guarda. Haz redeploy si hace falta.
 
 Con eso el health check solo comprueba que el contenedor está en marcha, sin depender de la BD ni de otros servicios.
+
+**Configuración de build en Render (Dockerfile y contexto):** Cada servicio debe construirse con la **carpeta del propio servicio** como contexto. En cada Web Service de Render:
+- **Root Directory:** la carpeta del servicio, p. ej. `Notifications.API`, `Users.API`, `Tasks.API`, `Expenses.API` o `Gateway.API` (según el servicio).
+- **Dockerfile Path:** `Dockerfile` (el que está dentro de esa carpeta).
+
+Así el `COPY` del Dockerfile encuentra el `.csproj` en la raíz del contexto y el build no falla con "not found".

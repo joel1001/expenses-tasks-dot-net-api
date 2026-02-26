@@ -69,8 +69,8 @@ services:
 
   users-api:
     build:
-      context: .
-      dockerfile: Users.API/Dockerfile
+      context: ./Users.API
+      dockerfile: Dockerfile
     container_name: users-api
     ports:
       - "5001:8080"
@@ -85,8 +85,8 @@ services:
 
   tasks-api:
     build:
-      context: .
-      dockerfile: Tasks.API/Dockerfile
+      context: ./Tasks.API
+      dockerfile: Dockerfile
     container_name: tasks-api
     ports:
       - "5002:8080"
@@ -101,8 +101,8 @@ services:
 
   expenses-api:
     build:
-      context: .
-      dockerfile: Expenses.API/Dockerfile
+      context: ./Expenses.API
+      dockerfile: Dockerfile
     container_name: expenses-api
     ports:
       - "5003:8080"
@@ -117,8 +117,8 @@ services:
 
   notifications-api:
     build:
-      context: .
-      dockerfile: Notifications.API/Dockerfile
+      context: ./Notifications.API
+      dockerfile: Dockerfile
     container_name: notifications-api
     ports:
       - "5004:8080"
@@ -135,8 +135,8 @@ services:
 
   gateway-api:
     build:
-      context: .
-      dockerfile: Gateway.API/Dockerfile
+      context: ./Gateway.API
+      dockerfile: Dockerfile
     container_name: gateway-api
     ports:
       - "8080:8080" # 6000 bloqueado por Chrome (ERR_UNSAFE_PORT)

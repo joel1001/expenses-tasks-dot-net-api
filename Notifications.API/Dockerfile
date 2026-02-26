@@ -4,10 +4,10 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY ["Notifications.API/Notifications.API.csproj", "Notifications.API/"]
-RUN dotnet restore "Notifications.API/Notifications.API.csproj"
+# Context = carpeta del servicio (p. ej. en Render Root Directory = Notifications.API)
+COPY ["Notifications.API.csproj", "."]
+RUN dotnet restore "Notifications.API.csproj"
 COPY . .
-WORKDIR "/src/Notifications.API"
 RUN dotnet build "Notifications.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

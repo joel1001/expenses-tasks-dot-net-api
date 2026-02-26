@@ -81,6 +81,9 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger"; // Acceder en /swagger
 });
 
+// Health check para Render: responde 200 sin tocar la BD (evita timeout del health check)
+app.MapGet("/health", () => Results.Ok(new { status = "ok", service = "users-api" }));
+
 // MapControllers - debe estar al final
 app.MapControllers();
 

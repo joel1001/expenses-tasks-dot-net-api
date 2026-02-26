@@ -4,10 +4,10 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY ["Users.API.csproj", "./"]
-RUN dotnet restore "Users.API.csproj"
+COPY ["Users.API/Users.API.csproj", "Users.API/"]
+RUN dotnet restore "Users.API/Users.API.csproj"
 COPY . .
-WORKDIR "/src"
+WORKDIR "/src/Users.API"
 RUN dotnet build "Users.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

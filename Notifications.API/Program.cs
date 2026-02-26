@@ -66,6 +66,10 @@ else
 }
 
 app.UseAuthorization();
+
+// Health check para Render: responde 200 sin tocar la BD (evita timeout del health check)
+app.MapGet("/health", () => Results.Ok(new { status = "ok", service = "notifications-api" }));
+
 app.MapControllers();
 
 // Crear schema/tablas si no existen (Neon o Postgres local)

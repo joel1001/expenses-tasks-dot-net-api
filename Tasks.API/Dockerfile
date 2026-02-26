@@ -4,10 +4,10 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY ["Tasks.API.csproj", "./"]
-RUN dotnet restore "Tasks.API.csproj"
+COPY ["Tasks.API/Tasks.API.csproj", "Tasks.API/"]
+RUN dotnet restore "Tasks.API/Tasks.API.csproj"
 COPY . .
-WORKDIR "/src"
+WORKDIR "/src/Tasks.API"
 RUN dotnet build "Tasks.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

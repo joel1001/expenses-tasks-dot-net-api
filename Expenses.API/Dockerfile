@@ -4,10 +4,10 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY ["Expenses.API.csproj", "./"]
-RUN dotnet restore "Expenses.API.csproj"
+COPY ["Expenses.API/Expenses.API.csproj", "Expenses.API/"]
+RUN dotnet restore "Expenses.API/Expenses.API.csproj"
 COPY . .
-WORKDIR "/src"
+WORKDIR "/src/Expenses.API"
 RUN dotnet build "Expenses.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

@@ -25,13 +25,13 @@ public class ExpensesController : ControllerBase
     public async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpenses()
     {
         var expenses = await _context.Expenses.ToListAsync();
-        
+
         var jsonOptions = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = true
         };
-        
+
         var dtos = expenses.Select(e => new ExpenseDto
         {
             Id = e.Id,
@@ -71,7 +71,7 @@ public class ExpensesController : ControllerBase
             PropertyNameCaseInsensitive = true
         };
         var expenseTypes = JsonSerializer.Deserialize<List<ExpenseTypeDto>>(expense.Expenses, jsonOptions) ?? new();
-        
+
         var dto = new ExpenseDto
         {
             Id = expense.Id,
@@ -163,12 +163,12 @@ public class ExpensesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ExpenseDto>> CreateExpense([FromBody] CreateExpenseDto dto)
     {
-        _logger.LogInformation("Received CreateExpense request. UserId: {UserId}, Expenses Count: {Count}, Month: {Month}, Year: {Year}", 
+        _logger.LogInformation("Received CreateExpense request. UserId: {UserId}, Expenses Count: {Count}, Month: {Month}, Year: {Year}",
             dto?.UserId, dto?.Expenses?.Count ?? 0, dto?.Month, dto?.Year);
 
         if (!ModelState.IsValid)
         {
-            _logger.LogWarning("ModelState is invalid: {Errors}", 
+            _logger.LogWarning("ModelState is invalid: {Errors}",
                 string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
             return BadRequest(ModelState);
         }
@@ -191,7 +191,7 @@ public class ExpensesController : ControllerBase
                 _logger.LogWarning("Expense type with empty name found");
                 return BadRequest(new { error = "Todos los tipos de gasto deben tener un nombre" });
             }
-            
+
             // Validar método de pago si se especifica
             if (!string.IsNullOrEmpty(expenseType.PaymentMethod))
             {
@@ -200,7 +200,7 @@ public class ExpensesController : ControllerBase
                     _logger.LogWarning("Invalid payment method: {PaymentMethod}", expenseType.PaymentMethod);
                     return BadRequest(new { error = "El método de pago debe ser 'credit' o 'debit'" });
                 }
-                
+
                 // Si es crédito, debe tener un creditCardId válido
                 if (expenseType.PaymentMethod == "credit" && (!expenseType.CreditCardId.HasValue || expenseType.CreditCardId.Value <= 0))
                 {
@@ -208,6 +208,7 @@ public class ExpensesController : ControllerBase
                     return BadRequest(new { error = "Debe seleccionar una tarjeta de crédito válida" });
                 }
             }
+            // Si PaymentMethod es null, está bien (sin tarjeta)
         }
 
         // Convertir la lista de gastos a JSON (usar processedExpenses que incluye todos los campos)
@@ -218,9 +219,9 @@ public class ExpensesController : ControllerBase
         };
         var expensesJson = JsonSerializer.Serialize(processedExpenses, jsonOptions);
         _logger.LogInformation("Serialized expenses to JSON: {Json}", expensesJson);
-        _logger.LogInformation("Expense types include PaymentMethod and CreditCardId: {Types}", 
+        _logger.LogInformation("Expense types include PaymentMethod and CreditCardId: {Types}",
             string.Join(", ", processedExpenses.Select(e => $"{e.Name}: PaymentMethod={e.PaymentMethod}, CreditCardId={e.CreditCardId}")));
-        
+
         // Log de campos Expected/Actual USD/CRC
         foreach (var expType in processedExpenses)
         {
@@ -230,7 +231,7 @@ public class ExpensesController : ControllerBase
                     expType.Name, expType.ExpectedUSD, expType.ActualUSD, expType.ExpectedCRC, expType.ActualCRC);
             }
         }
-        
+
         // Verificar que el JSON contiene paymentMethod
         if (expensesJson.Contains("paymentMethod", StringComparison.OrdinalIgnoreCase))
         {
@@ -245,8 +246,8 @@ public class ExpensesController : ControllerBase
         var now = DateTime.UtcNow;
         var month = dto.Month.HasValue ? dto.Month.Value : now.Month;
         var year = dto.Year.HasValue ? dto.Year.Value : now.Year;
-        
-        _logger.LogInformation("Using Month: {Month}, Year: {Year} (from DTO: Month={DtoMonth}, Year={DtoYear})", 
+
+        _logger.LogInformation("Using Month: {Month}, Year: {Year} (from DTO: Month={DtoMonth}, Year={DtoYear})",
             month, year, dto.Month, dto.Year);
 
         var expense = new Expense
@@ -267,7 +268,7 @@ public class ExpensesController : ControllerBase
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
-        
+
         _logger.LogInformation("Created Expense entity with Month: {Month}, Year: {Year}", expense.Month, expense.Year);
 
         try
@@ -338,7 +339,7 @@ public class ExpensesController : ControllerBase
             {
                 return BadRequest(new { error = "Todos los tipos de gasto deben tener un nombre" });
             }
-            
+
             // Validar método de pago si se especifica (acepta "credit", "debit", "Debit Account", "Payment method", etc.)
             if (!string.IsNullOrEmpty(expenseType.PaymentMethod))
             {
@@ -355,6 +356,7 @@ public class ExpensesController : ControllerBase
                     return BadRequest(new { error = "Debe seleccionar una tarjeta de crédito válida" });
                 }
             }
+            // Si PaymentMethod es null, está bien (sin tarjeta)
         }
 
         // Convertir la lista de gastos a JSON
@@ -363,15 +365,15 @@ public class ExpensesController : ControllerBase
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = true
         };
-        
+
         _logger.LogInformation("UpdateExpense - Received {Count} expense types", dto.Expenses?.Count ?? 0);
         foreach (var expType in dto.Expenses ?? new List<ExpenseTypeDto>())
         {
-            _logger.LogInformation("  - {Name}: Limit={Limit}, ActualAmount={ActualAmount}, Currency={Currency}, ExpectedUSD={ExpectedUSD}, ActualUSD={ActualUSD}, ExpectedCRC={ExpectedCRC}, ActualCRC={ActualCRC}, PaymentMethod={PaymentMethod}, CreditCardId={CreditCardId}", 
+            _logger.LogInformation("  - {Name}: Limit={Limit}, ActualAmount={ActualAmount}, Currency={Currency}, ExpectedUSD={ExpectedUSD}, ActualUSD={ActualUSD}, ExpectedCRC={ExpectedCRC}, ActualCRC={ActualCRC}, PaymentMethod={PaymentMethod}, CreditCardId={CreditCardId}",
                 expType.Name, expType.Limit, expType.ActualAmount, expType.Currency,
                 expType.ExpectedUSD, expType.ActualUSD, expType.ExpectedCRC, expType.ActualCRC,
                 expType.PaymentMethod, expType.CreditCardId);
-            
+
             // Log de AdditionalProperties si existen (campos con espacios como "Expected USD")
             if (expType.AdditionalProperties != null && expType.AdditionalProperties.Count > 0)
             {
@@ -379,16 +381,16 @@ public class ExpensesController : ControllerBase
                     expType.Name, string.Join(", ", expType.AdditionalProperties.Select(kvp => $"{kvp.Key}={kvp.Value}")));
             }
         }
-        
+
         // Procesar los expenses para preservar todos los campos, incluyendo los que vienen con espacios
         var processedExpenses = ProcessExpenseTypes(dto.Expenses ?? new List<ExpenseTypeDto>());
-        
+
         var expensesJson = JsonSerializer.Serialize(processedExpenses, jsonOptions);
         _logger.LogInformation("UpdateExpense - Serialized JSON: {Json}", expensesJson);
-        
+
         // Verificar que el JSON contiene los campos esperados
         var jsonLower = expensesJson.ToLowerInvariant();
-        if (jsonLower.Contains("expectedusd") || jsonLower.Contains("actualusd") || 
+        if (jsonLower.Contains("expectedusd") || jsonLower.Contains("actualusd") ||
             jsonLower.Contains("expectedcrc") || jsonLower.Contains("actualcrc") ||
             expensesJson.Contains("Expected USD", StringComparison.OrdinalIgnoreCase) ||
             expensesJson.Contains("Actual USD", StringComparison.OrdinalIgnoreCase) ||
@@ -397,7 +399,7 @@ public class ExpensesController : ControllerBase
         {
             _logger.LogInformation("✅ UpdateExpense - JSON contiene campos Expected/Actual USD/CRC");
         }
-        
+
         if (expensesJson.Contains("paymentMethod", StringComparison.OrdinalIgnoreCase))
         {
             _logger.LogInformation("✅ UpdateExpense - JSON contiene paymentMethod");
@@ -407,8 +409,8 @@ public class ExpensesController : ControllerBase
         var now = DateTime.UtcNow;
         var month = dto.Month.HasValue ? dto.Month.Value : (expense.Month > 0 ? expense.Month : now.Month);
         var year = dto.Year.HasValue ? dto.Year.Value : (expense.Year > 0 ? expense.Year : now.Year);
-        
-        _logger.LogInformation("UpdateExpense - Using Month: {Month}, Year: {Year} (from DTO: Month={DtoMonth}, Year={DtoYear}, existing: Month={ExistingMonth}, Year={ExistingYear})", 
+
+        _logger.LogInformation("UpdateExpense - Using Month: {Month}, Year: {Year} (from DTO: Month={DtoMonth}, Year={DtoYear}, existing: Month={ExistingMonth}, Year={ExistingYear})",
             month, year, dto.Month, dto.Year, expense.Month, expense.Year);
 
         expense.UserId = dto.UserId;
@@ -485,7 +487,7 @@ public class ExpensesController : ControllerBase
                 CreditCardId = expense.CreditCardId,
                 AdditionalProperties = new Dictionary<string, object>()
             };
-            
+
             // Si hay AdditionalProperties, procesarlos para preservar todos los campos
             if (expense.AdditionalProperties != null)
             {
@@ -512,7 +514,7 @@ public class ExpensesController : ControllerBase
                         if (decimal.TryParse(prop.Value?.ToString(), out var actualCrc))
                             processedExpense.ActualCRC = actualCrc;
                     }
-                    
+
                     // Preservar todos los campos adicionales para que se guarden en el JSON
                     if (processedExpense.AdditionalProperties != null && prop.Value != null)
                     {
@@ -520,10 +522,10 @@ public class ExpensesController : ControllerBase
                     }
                 }
             }
-            
+
             processed.Add(processedExpense);
         }
-        
+
         return processed;
     }
 
@@ -536,11 +538,16 @@ public class ExpensesController : ControllerBase
 
     /// <summary>
     /// Acepta "Debit Account", "Payment method", "debit", "credit", etc. y devuelve "debit" o "credit".
+    /// "-" o null devuelve null (sin tarjeta)
     /// </summary>
     private static string? NormalizePaymentMethod(string? paymentMethod)
     {
         if (string.IsNullOrWhiteSpace(paymentMethod)) return null;
         var lower = paymentMethod.Trim().ToLowerInvariant();
+
+        // Si es "-" o vacío, devolver null (sin tarjeta)
+        if (lower == "-" || lower == "null" || lower == "none") return null;
+
         if (lower.Contains("credit")) return "credit";
         if (lower.Contains("debit") || lower.Contains("account") || lower.Contains("payment")) return "debit";
         return paymentMethod.Trim();

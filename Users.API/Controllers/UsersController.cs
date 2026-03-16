@@ -95,6 +95,16 @@ public class UsersController : ControllerBase
         {
             return BadRequest(new { error = ex.Message });
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "CreateUser failed");
+            var msg = ex.Message.Contains("connection", StringComparison.OrdinalIgnoreCase)
+                || ex.Message.Contains("timeout", StringComparison.OrdinalIgnoreCase)
+                || ex.GetType().Name.Contains("Npgsql")
+                ? "No se pudo conectar a la base de datos. Revisa Cloud SQL (red autorizada) y la contraseña en Cloud Run."
+                : ex.Message;
+            return StatusCode(500, new { error = msg });
+        }
     }
 
     [HttpPut("{id}")]

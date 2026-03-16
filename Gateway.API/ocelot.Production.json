@@ -5,21 +5,22 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api-v29h.onrender.com",
+          "Host": "users-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/users/login",
       "UpstreamHttpMethod": [
         "POST"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/users",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api-v29h.onrender.com",
+          "Host": "users-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
@@ -29,14 +30,15 @@
         "POST",
         "PUT",
         "DELETE"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/users/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api-v29h.onrender.com",
+          "Host": "users-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
@@ -45,14 +47,15 @@
         "GET",
         "PUT",
         "DELETE"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/users/{userId}/credit-cards",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "users-api-v29h.onrender.com",
+          "Host": "users-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
@@ -62,14 +65,15 @@
         "POST",
         "PUT",
         "DELETE"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/tasks",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "tasks-api-7wez.onrender.com",
+          "Host": "tasks-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
@@ -79,14 +83,15 @@
         "POST",
         "PUT",
         "DELETE"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/tasks/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "tasks-api-7wez.onrender.com",
+          "Host": "tasks-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
@@ -95,28 +100,30 @@
         "GET",
         "PUT",
         "DELETE"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/tasks/user/{userId}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "tasks-api-7wez.onrender.com",
+          "Host": "tasks-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/tasks/user/{userId}",
       "UpstreamHttpMethod": [
         "GET"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/expenses",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api-4usi.onrender.com",
+          "Host": "expenses-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
@@ -126,14 +133,15 @@
         "POST",
         "PUT",
         "DELETE"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/expenses/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api-4usi.onrender.com",
+          "Host": "expenses-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
@@ -142,42 +150,45 @@
         "GET",
         "PUT",
         "DELETE"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/expenses/user/{userId}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api-4usi.onrender.com",
+          "Host": "expenses-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/expenses/user/{userId}",
       "UpstreamHttpMethod": [
         "GET"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/expenses/by-user-id/{userIdInt}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "expenses-api-4usi.onrender.com",
+          "Host": "expenses-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/expenses/by-user-id/{userIdInt}",
       "UpstreamHttpMethod": [
         "GET"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/notifications",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api-aisk.onrender.com",
+          "Host": "notifications-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
@@ -187,14 +198,15 @@
         "POST",
         "PUT",
         "DELETE"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/notifications/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api-aisk.onrender.com",
+          "Host": "notifications-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
@@ -204,49 +216,53 @@
         "PUT",
         "DELETE",
         "PATCH"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/notifications/user/{userId}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api-aisk.onrender.com",
+          "Host": "notifications-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/user/{userId}",
       "UpstreamHttpMethod": [
         "GET"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/notifications/user/{userId}/unread",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api-aisk.onrender.com",
+          "Host": "notifications-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/user/{userId}/unread",
       "UpstreamHttpMethod": [
         "GET"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/notifications/user/{userId}/unread/count",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notifications-api-aisk.onrender.com",
+          "Host": "notifications-api-607312729200.us-central1.run.app",
           "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/user/{userId}/unread/count",
       "UpstreamHttpMethod": [
         "GET"
-      ]
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     }
   ],
   "GlobalConfiguration": {

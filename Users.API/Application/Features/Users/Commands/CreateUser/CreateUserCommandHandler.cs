@@ -24,8 +24,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserD
             throw new InvalidOperationException($"User with email {request.Email} already exists.");
         }
 
-        // Hash de la contraseña usando BCrypt
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+        // Hash de la contraseña con BCrypt (workFactor 10: respuesta más rápida en Cloud Run; por defecto 11 es lento)
+        var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password, workFactor: 10);
 
         // Generar token único para el usuario (GUID)
         var token = Guid.NewGuid().ToString("N"); // Generar token único
